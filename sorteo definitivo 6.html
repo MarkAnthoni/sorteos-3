@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>sorteos</title>
+</head>
+
+<body>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Responsivo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            padding: 10px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 15px;
+        }
+        textarea, .resultados, table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        textarea {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            min-height: 100px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .resultados {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                margin: 10px;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+    <script>
+        function realizarSorteo() {
+            var participantes = document.getElementById('participantes').value.trim().split('\n');
+            var premios = document.getElementById('premios').value.trim().split('\n');
+            var resultadosDiv = document.getElementById('resultados');
+            resultadosDiv.innerHTML = ''; // Limpiar resultados anteriores
+
+            if (participantes.length !== premios.length) {
+                alert('Debe haber la misma cantidad de participantes y premios.');
+                return false;
+            }
+
+            // Mezclar aleatoriamente el array de premios
+            for (let i = premios.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [premios[i], premios[j]] = [premios[j], premios[i]];
+            }
+
+            // Crear y mostrar la tabla de resultados
+            var tabla = '<table><tr><th>Familiar</th><th>Bocadito a llevar</th></tr>';
+            participantes.forEach((participante, index) => {
+                tabla += `<tr><td>${participante}</td><td>${premios[index]}</td></tr>`;
+            });
+            tabla += '</table>';
+            resultadosDiv.innerHTML = tabla;
+
+            return false; // Evitar el envío del formulario
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Sorteo de Bocaditos</h2>
+
+    <form onsubmit="return realizarSorteo();">
+        <div>
+            <label for="participantes">Ingerse el nombre del Familiar:</label>
+            <textarea id="participantes" required></textarea>
+        </div>
+        
+        <div>
+            <label for="premios">Ingrese el nombre del Bocadito:</label>
+            <textarea id="premios" required></textarea>
+        </div>
+        
+        <input type="submit" value="Realizar Sorteo">
+    </form>
+
+    <div class="resultados" id="resultados"></div>
+</div>
+
+</body>
+</html>
